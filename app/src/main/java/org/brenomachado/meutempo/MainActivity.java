@@ -1,5 +1,6 @@
 package org.brenomachado.meutempo;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listview_forecast);
 
         listView.setAdapter(mForecastAdapter);
+}
+
+public class FetchWeatherTask extends AsyncTask<String, Void, Void>
+{
+    private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
+    @Override
+    protected Void doInBackground(String... params) {
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -61,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
-                return;
+                return null;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -75,14 +84,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                return;
+                return null;
             }
             forecastJsonStr = buffer.toString();
         } catch (IOException e) {
             Log.e("PlaceholderFragment", "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
-            return;
+            return null;
         } finally{
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -95,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        return null;
     }
-
-
 }
