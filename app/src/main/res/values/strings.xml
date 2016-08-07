@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MeuTempo</string>
     <string name="action_refresh" translatable="false">Refresh</string>
+    <string name="title_activity_detail">DetailActivity</string>
 </resources>
