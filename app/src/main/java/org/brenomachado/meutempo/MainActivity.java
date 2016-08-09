@@ -1,6 +1,7 @@
 package org.brenomachado.meutempo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public ArrayAdapter<String> mForecastAdapter;
-
+    private MainActivity local = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +61,16 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Context context = getApplicationContext();
-                CharSequence text = mForecastAdapter.getItem(i);
-                int duration = Toast.LENGTH_SHORT;
+                //Context context = getApplicationContext();
+                //CharSequence text = mForecastAdapter.getItem(i);
+                //int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
+                //Toast toast = Toast.makeText(context, text, duration);
+                //toast.show();
+                String forecast = mForecastAdapter.getItem(i);
+                Intent intent = new Intent(local, DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
             }
         });
     }
