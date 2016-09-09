@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
                 task.execute("3152100,br");
 
                 return true;
+            case R.id.action_main_settings:
+                Intent intent = new Intent(local, SettingsActivity.class);
+                startActivity(intent);
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
