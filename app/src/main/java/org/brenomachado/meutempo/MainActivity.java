@@ -2,8 +2,10 @@ package org.brenomachado.meutempo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,21 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        String[] forecastList = {
-                "Hoje - Ensolarado - 24 / 18",
-                "Amanhã - Ensolarado - 24 / 18",
-                "Sex - Ensolarado - 24 / 18",
-                "Sab - Ensolarado - 24 / 18",
-                "Dom - Ensolarado - 24 / 18",
-                "Seg - Ensolarado - 24 / 18"
-        };
-
-        List<String> weekForecast = new ArrayList<>(Arrays.asList(forecastList));
-
         mForecastAdapter = new ArrayAdapter<String>(getApplicationContext(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                weekForecast);
+                new ArrayList<String>());
 
         ListView listView = (ListView) findViewById(R.id.listview_forecast);
 
@@ -87,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                FetchWeatherTask task = new FetchWeatherTask();
-                task.execute("3152100,br");
+                updateWeather();
 
                 return true;
             case R.id.action_main_settings:
@@ -99,6 +89,20 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void updateWeather() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        FetchWeatherTask task = new FetchWeatherTask();
+        task.execute(location);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateWeather();
     }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>

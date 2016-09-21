@@ -8,6 +8,10 @@
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
+    <string name="pref_location_key">location</string>
+    <string name="pref_location_label">Localização</string>
+    <string name="pref_location_default">31520100,br</string>
+
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>

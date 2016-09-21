@@ -21,6 +21,9 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Intent intent = getIntent();
         String forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
 
@@ -32,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_detail, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
