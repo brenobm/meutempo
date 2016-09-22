@@ -12,6 +12,22 @@
     <string name="pref_location_label">Localização</string>
     <string name="pref_location_default">31520100,br</string>
 
+    <string name="pref_unit_metrics">metrics</string>
+    <string name="pref_unit_imperial">imperial</string>
+
+    <string name="pref_unit_key">unit</string>
+    <string name="pref_unit_label">Unidade</string>
+    <string name="pref_unit_default">metrics</string>
+
+    <string-array name="pref_unit_list">
+        <item>Métrico</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="pref_unit_list_values">
+        <item>metrics</item>
+        <item>imperial</item>
+    </string-array>
+
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_social_recommendations">Enable social recommendations</string>

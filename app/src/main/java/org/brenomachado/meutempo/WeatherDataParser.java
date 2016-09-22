@@ -1,5 +1,9 @@
 package org.brenomachado.meutempo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -14,6 +18,8 @@ import java.text.SimpleDateFormat;
  */
 public class WeatherDataParser {
     private final static String LOG_TAG = WeatherDataParser.class.getSimpleName();
+
+    public static Context context;
 
     public static double getMaxTemperatureForDay(String weatherJsonStr, int dayIndex)
         throws JSONException{
@@ -37,12 +43,19 @@ public class WeatherDataParser {
     /**
      * Prepare the weather high/lows for presentation.
      */
-    public static String formatHighLows(double high, double low) {
+    public static String formatHighLows(double high, double low, String unit) {
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
-        String highLowStr = roundedHigh + "/" + roundedLow;
+        String highLowStr = "";
+
+        if (unit.equals(context.getString(R.string.pref_unit_metrics))) {
+            highLowStr = String.format("%1$,.2f ºC / %2$,.2f ºC", (roundedHigh / 10d), (roundedLow / 10d));
+        } else {
+            highLowStr = String.format("%1d ºF / %2d ºF", roundedHigh, roundedLow);
+        }
+
         return highLowStr;
     }
 
@@ -53,7 +66,7 @@ public class WeatherDataParser {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+    public static String[] getWeatherDataFromJson(String forecastJsonStr, int numDays, String unit)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -112,7 +125,7 @@ public class WeatherDataParser {
             double high = temperatureObject.getDouble(OWM_MAX);
             double low = temperatureObject.getDouble(OWM_MIN);
 
-            highAndLow = formatHighLows(high, low);
+            highAndLow = formatHighLows(high, low, unit);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
         }
 

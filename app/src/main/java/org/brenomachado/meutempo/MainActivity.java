@@ -95,8 +95,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String location = prefs.getString(getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default));
+        String unit = prefs.getString(getString(R.string.pref_unit_key),
+                getString(R.string.pref_unit_default));
         FetchWeatherTask task = new FetchWeatherTask();
-        task.execute(location);
+        task.execute(location, unit);
     }
 
     @Override
@@ -141,10 +143,13 @@ public class MainActivity extends AppCompatActivity {
                 final String API_KEY_PARAMETER = "APPID";
                 final String API_KEY_VALUE = "a0636df2c56e1fc817cb8a0c1a46d609";
 
+                String location = params[0];
+                String unit = params[1];
+
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(QUERY_PARAMETER, params[0])
+                        .appendQueryParameter(QUERY_PARAMETER, location)
                         .appendQueryParameter(FORMAT_PARAMETER, "json")
-                        .appendQueryParameter(UNITS_PARAMETER, "metrics")
+                        .appendQueryParameter(UNITS_PARAMETER, unit)
                         .appendQueryParameter(DAYS_PARAMETER, "7")
                         .appendQueryParameter(API_KEY_PARAMETER, API_KEY_VALUE)
                         .build();
@@ -179,8 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 forecastJsonStr = buffer.toString();
 
+                WeatherDataParser.context = getApplicationContext();
 
-                return WeatherDataParser.getWeatherDataFromJson(forecastJsonStr, 7);
+                return WeatherDataParser.getWeatherDataFromJson(forecastJsonStr, 7, unit);
             } catch (IOException e) {
                 Log.e("PlaceholderFragment", "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
