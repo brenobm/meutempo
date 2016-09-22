@@ -33,6 +33,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = MainActivity.class.getName();
     public ArrayAdapter<String> mForecastAdapter;
     private MainActivity local = this;
     @Override
@@ -86,8 +87,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
 
                 return true;
+            case R.id.action_main_preferred_location:
+                openPreferredLocationInMap();
+
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openPreferredLocationInMap() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+
+        if (intent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(intent);
+        } else {
+            Log.d(LOG_TAG, "Couldn't call " + location);
         }
     }
 

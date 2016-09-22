@@ -9,4 +9,7 @@
     <item android:id="@+id/action_main_settings"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item android:id="@+id/action_main_preferred_location"
+        android:title="@string/menu_preferred_location"
+        app:showAsAction="never" />
 </menu>

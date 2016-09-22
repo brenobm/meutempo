@@ -19,6 +19,8 @@
     <string name="pref_unit_label">Unidade</string>
     <string name="pref_unit_default">metrics</string>
 
+    <string name="menu_preferred_location">Localização Desejada</string>
+
     <string-array name="pref_unit_list">
         <item>Métrico</item>
         <item>Imperial</item>
