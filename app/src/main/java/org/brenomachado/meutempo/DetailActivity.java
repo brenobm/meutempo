@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
         String forecast = intent.getStringExtra(Intent.EXTRA_TEXT);
 
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            String mForescastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mForescastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
             ((TextView) findViewById(R.id.textView)).setText(mForescastStr);
         }
 
