@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
 
+    private String mLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mForecastAdapter = new ForecastAdapter(getApplicationContext(), null, 0);
+
+        mLocation = Utility.getPreferredLocation(getApplicationContext());
 
         ListView listView = (ListView) findViewById(R.id.listview_forecast);
 
@@ -147,7 +151,19 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
-        updateWeather();
+        //updateWeather();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String location = Utility.getPreferredLocation(this);
+
+        if (location != null && !location.equals(mLocation))
+            onLocationChanged();
+
+        mLocation = location;
     }
 
     @Override
@@ -175,6 +191,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mForecastAdapter.swapCursor(null);
+    }
+
+    private void onLocationChanged() {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 }
 
